@@ -1,7 +1,7 @@
 node {
 	stage "Setup"
 		echo "About to clone git url";
-		git url: "https://github.com/rhpoc/ticket-monster"
+		git branch: master url: "https://github.com/rhpoc/ticket-monster"
 
 	
 	stage "Build"
