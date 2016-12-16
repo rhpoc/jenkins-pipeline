@@ -6,7 +6,7 @@ node {
 	
 	stage "Build"
 		echo "About to cd into repository";
-		sh "cd ticket-monster/demo"
+		sh "cd demo"
 
 		echo "About to run mvn command";
 		sh "mvn clean package -Ppostgresql-openshift"
