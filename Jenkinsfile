@@ -5,9 +5,7 @@ node ('maven') {
 
 	
 	stage "Build"
-		echo "pwd: " 
 		sh "pwd";
-
 		sh "ls -la demo/";
 
 		echo "About to run mvn command";
