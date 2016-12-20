@@ -9,6 +9,18 @@ node ('maven') {
 		sh "ls -la demo/";
 
 		echo "About to run mvn command";
-		sh "cd demo; mvn clean test package -DskipTests=false -Ppostgresql-openshift"
+		#sh "cd demo; mvn clean test package -DskipTests=false -Ppostgresql-openshift"
+		sh "cd demo; mvn clean package -Ppostgresql-openshift"
+
+	stage 'Test and Analysis'
+             parallel (
+                 'Test': {
+                     sh "mvn test"
+                     step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+                 },
+                 'Static Analysis': {
+                     sh "mvn jacoco:report sonar:sonar -Dsonar.host.url=http://http://sonarqube-openshift-docker-openshift-ticket-monster-dev.apps.rhpoc.com -DskipTests=true"
+                 }
+             )
 
 }
