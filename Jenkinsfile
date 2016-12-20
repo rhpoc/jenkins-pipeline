@@ -11,6 +11,6 @@ node ('maven') {
 		sh "ls -la demo/";
 
 		echo "About to run mvn command";
-		sh "cd demo; mvn clean package -Ppostgresql-openshift"
+		sh "cd demo; mvn clean test package -DskipTests=false -Ppostgresql-openshift"
 
 }
