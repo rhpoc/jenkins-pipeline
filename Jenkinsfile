@@ -10,6 +10,8 @@ node ('maven') {
         stage 'Test and Analysis'
             //unstash "todolist"
             sh "cd todolist/todolist-jdbc; mvn test"
+            //sh "cd todolist/todolist-jdbc; export JBOSS_MANAGEMENT_ADDRESS=localhost; mvn -Pit test "
+
             sh "cd todolist/todolist-jdbc; mvn sonar:sonar -Dsonar.host.url=http://sonarqube-openshift-docker-openshift-ticket-monster-dev.apps.rhpoc.com/ -DskipTests=true"
 
         stage 'Push to Nexus'
@@ -43,6 +45,10 @@ node ('maven') {
             sh "${ocCmd}  expose svc/todolist -n openshift-ticket-monster-env-dev"
             
             sh "cd todolist/todolist-jdbc; mvn test"
+            
+            // integration test fails because the management port is hard coded (in openshift-launch.sh) to 127.0.0.1
+            // The only way to override it would be to extend the S2I image for jboss-eap70-openshift
+            //sh "cd todolist/todolist-jdbc; mvn -Pit test "
 
     
 }
